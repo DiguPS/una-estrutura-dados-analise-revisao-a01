@@ -1,0 +1,79 @@
+using System;
+					
+public class Program
+{
+	public static void Main()
+	{
+		
+        string nome;
+        int idade;
+        string[] perguntas = {
+            "Seu cartão de vacina está em dia?",
+            "Teve algum dos sintomas recentemente? (dor de cabeça, febre, náusea, dor articular, gripe)",
+            "Teve contato com pessoas com sintomas gripais nos últimos dias?",
+            "Está retornando de viagem realizada no exterior?"
+        };
+        string[] respostas = new string[4];
+        int[] porcentagens = { 10, 30, 30, 30 };
+        int probabilidade = 0;
+
+        Console.Write("Informe o seu nome: ");
+        nome = Console.ReadLine();
+
+        Console.Write("Informe a sua idade: ");
+        idade = Convert.ToInt32(Console.ReadLine());
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int tentativa = 0; tentativa < 3; tentativa++)
+            {
+                Console.Write(perguntas[i] + " (SIM/NAO): ");
+                respostas[i] = Console.ReadLine().ToUpper();
+
+                if (respostas[i] == "SIM" || respostas[i] == "NAO")
+                {
+                    if ((i == 0 && respostas[i] == "NAO") || (i != 0 && respostas[i] == "SIM"))
+                    {
+                        probabilidade += porcentagens[i];
+                    }
+                    break;
+                }
+                else if (tentativa == 2)
+                {
+                    Console.WriteLine("Não foi possível realizar o diagnóstico. Gentileza procurar ajuda médica caso apareça algum sintoma.");
+                    return;
+                }
+            }
+        }
+
+        Console.WriteLine("\nNome: " + nome);
+        Console.WriteLine("Idade: " + idade);
+        Console.WriteLine("Se o cartão de vacina está em dia: " + respostas[0]);
+        Console.WriteLine("Se teve sintomas recentemente: " + respostas[1]);
+        Console.WriteLine("Se teve contato com pessoas infectadas: " + respostas[2]);
+        Console.WriteLine("Se a pessoa está retornando de viagem: " + respostas[3]);
+        Console.WriteLine("A probabilidade dessa pessoa estar infectada: " + probabilidade + "%");
+
+        if (probabilidade <= 30)
+        {
+            Console.WriteLine("Paciente sob observação. Caso apareça algum sintoma, gentileza buscar assistência médica.");
+        }
+        else if (probabilidade <= 60)
+        {
+            Console.WriteLine("Paciente com risco de estar infectado. Gentileza aguardar em lockdown por 02 dias para ser acompanhado.");
+        }
+        else if (probabilidade <= 89)
+        {
+            Console.WriteLine("Paciente com alto risco de estar infectado. Gentileza aguardar em lockdown por 05 dias para ser acompanhado.");
+        }
+        else
+        {
+            Console.WriteLine("Paciente crítico! Gentileza aguardar em lockdown por 10 dias para ser acompanhado");
+        }
+
+        if (respostas[3] == "SIM")
+        {
+            Console.WriteLine("Você ficará sob observação por 05 dias.");
+        }
+    }
+}
